@@ -1,0 +1,10 @@
+The concurrency and locks depends on the data structure used in the database 
+1) HashTable Database - if its a hash table data then the lock can be applied on a  certain record, this ensures higher concurrency 
+  as we can lock individual records and the requests on other record which are not locked can still be processed, but the downside is
+  that there will be locks on records and the maintainenance of locks can be an issue. 
+
+2) B+ tree based databases - in B + tree based database we have pages which will be locked and these pages may have multiple records
+  and all these records will be locked when a page is accessed, this reduces the concurrency but the upside is that we will have less 
+  locks to maintain than in the hash table database.
+
+  
