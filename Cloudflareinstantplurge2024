@@ -1,0 +1,25 @@
+https://blog.cloudflare.com/instant-purge/
+https://blog.cloudflare.com/part1-coreless-purge/
+https://blog.cloudflare.com/rethinking-cache-purge-architecture/
+https://blog.cloudflare.com/introducing-quicksilver-configuration-distribution-at-internet-scale/
+
+purging - cache invalidation 
+
+Instant purge - how cloud flare plurges their caches in record breaking times of less than 150 ms 
+
+
+1) indexing locally on machine level so that the indexes can be read using Unix Domain Sockets 
+2) cacheDB written on top of RocksDB, it is present along with the cache proxy and indexes data and also keeps a record of the purges, a background process or job reads the purge requests and deletes all the files
+   related to the purge, after all the files are deleted, the purge request is removed from the database.
+3) Lets say we get a request for a file at 5:01 PM and there is a purge request for that file at 5:00 PM, this means that the file should have been removed but hasnot been removed yet because the background process may
+take some time if there are lot of files to be removed, in that case the new file be requested to the server instead of providing this stale file back to the user.
+
+questions
+
+1) Before they were using a hub spoke architecture where the hub used to send purge requests to every spoke, how is it any different now ?
+Now they are using a peer to peer architecture for distribution of purge requests 
+
+2) What I understand is that instead of the sending requests to each and every data center they send it to some data centers and those data center fans out the purges to nearby data centers  (not the right understanding)
+
+3) cache invalidation is a difficult problem to solve 
+
